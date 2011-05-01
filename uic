@@ -1,0 +1,5 @@
+#!/bin/bash
+
+pyuic4 ui/mainWindow.ui > mainWindow.py
+pyrcc4 -o mainWindow_rc.py ui/mainWindow.qrc
+
