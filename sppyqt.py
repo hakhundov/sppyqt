@@ -70,14 +70,14 @@ class CMainWindow(QMainWindow):
                         (self.getSelectedPort(), self.getSelectedBaudRate()))
          self.ser = serial.Serial(str(self.getSelectedPort()), \
                                   int(self.getSelectedBaudRate()))
-         self.startPooling()
+         self.startPolling()
          self.printInfo("Connected successfully.")
       except:
          self.ser = None
          self.printError("Failed to connect!")
 
    def disconnect(self):
-      self.stopPooling()
+      self.stopPolling()
       if self.ser == None: return
       try:
          if self.ser.isOpen:
@@ -101,13 +101,13 @@ class CMainWindow(QMainWindow):
          self.ui.logPlainTextEdit.insertPlainText(text)
          self.ui.logPlainTextEdit.moveCursor(QTextCursor.End)
 
-   def startPooling(self):
-      self.stopPooling()
+   def startPolling(self):
+      self.stopPolling()
       self.logTimer = QTimer()
       QObject.connect(self.logTimer, SIGNAL("timeout()"), self.checkBuffer)
       self.logTimer.start(10)
       
-   def stopPooling(self):
+   def stopPolling(self):
       if self.logTimer == None: return
       self.logTimer.stop()
 
