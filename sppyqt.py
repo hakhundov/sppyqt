@@ -105,7 +105,7 @@ class CMainWindow(QMainWindow):
       self.stopPooling()
       self.logTimer = QTimer()
       QObject.connect(self.logTimer, SIGNAL("timeout()"), self.checkBuffer)
-      self.logTimer.start(100)
+      self.logTimer.start(10)
       
    def stopPooling(self):
       if self.logTimer == None: return
