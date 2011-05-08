@@ -144,7 +144,8 @@ class CReader(QThread):
          try:
             data = self.ser.read(1)
             n = self.ser.inWaiting()
-            data = data + self.ser.read(n)
+            if n:
+               data = data + self.ser.read(n)
             self.emit(SIGNAL("newData(QString)"), data)
          except:
             errMsg = "Reader thread is terminated unexpectedly."
