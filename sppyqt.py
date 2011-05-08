@@ -135,30 +135,21 @@ class CMainWindow(QMainWindow):
       self.disconnect()
 
 class CReader(QThread):
-   def __init__(self):
-      QThread.__init__(self)
-      self.alive = False
-   
    def start(self, ser, priority = QThread.InheritPriority):
       self.ser = ser
       QThread.start(self, priority)
       
    def run(self):
-      self.alive = True
-      while self.alive:
+      while True:
          try:
-            inWaiting = self.ser.inWaiting()
-            if inWaiting:
-               self.emit(SIGNAL("newData(QString)"), self.ser.read(inWaiting))
+            data = self.ser.read(1)
+            n = self.ser.inWaiting()
+            data = data + self.ser.read(n)
+            self.emit(SIGNAL("newData(QString)"), data)
          except:
             errMsg = "Reader thread is terminated unexpectedly."
             self.emit(SIGNAL("error(QString)"), errMsg)
             break
-
-   def terminate(self):
-      self.alive = False
-      self.wait()
-      QThread.terminate(self)
 
 class CWriter(QThread):
    def start(self, ser, cmd = "", priority = QThread.InheritPriority):
